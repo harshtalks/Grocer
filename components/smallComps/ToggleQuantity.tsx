@@ -1,0 +1,80 @@
+import React from "react";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import CloseIcon from "@mui/icons-material/Close";
+
+type toggleQtyType = {
+  setQuantity: React.Dispatch<React.SetStateAction<number>>;
+  quantity: number;
+  setToggleQtyIncremental: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ToggleQuantity = ({
+  setQuantity,
+  quantity,
+  setToggleQtyIncremental,
+}: toggleQtyType) => {
+  return (
+    <Box
+      sx={{
+        background: "white",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: "0.5em",
+        padding: "10px",
+        borderRadius: "20px",
+      }}
+    >
+      <Tooltip title="Delete">
+        <DeleteSweepIcon
+          fontSize="medium"
+          color="primary"
+          sx={{ cursor: "pointer" }}
+        />
+      </Tooltip>
+      <Typography
+        sx={{ cursor: "pointer" }}
+        variant="h5"
+        color={"primary"}
+        onClick={() => {
+          setQuantity((quantity) => quantity + 1);
+        }}
+      >
+        {"+"}
+      </Typography>
+      <Button
+        size="small"
+        color="primary"
+        sx={{ borderRadius: "20px", fontSize: "12px" }}
+        variant="outlined"
+      >
+        {quantity}
+      </Button>
+      <Typography
+        variant="h5"
+        sx={{ cursor: "pointer" }}
+        color={"primary"}
+        onClick={() => {
+          if (quantity > 1) {
+            setQuantity((quantity) => quantity - 1);
+          }
+        }}
+      >
+        {"-"}
+      </Typography>
+      <Tooltip title="Close">
+        <CloseIcon
+          color="primary"
+          sx={{ cursor: "pointer" }}
+          fontSize="medium"
+          onClick={(toggleQtyIncremental) =>
+            setToggleQtyIncremental(!toggleQtyIncremental)
+          }
+        />
+      </Tooltip>
+    </Box>
+  );
+};
+
+export default ToggleQuantity;
