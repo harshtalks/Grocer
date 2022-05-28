@@ -17,7 +17,7 @@ model User {
   id      Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   email   String   @unique
-  name    String?
+  name    String
   password String
   lists ShoppingList[]
 }
@@ -25,7 +25,7 @@ model User {
 model ShoppingList {
   id      Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  name    String
+  name    String 
   owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
   items ShoppingListItem[]

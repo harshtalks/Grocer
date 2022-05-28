@@ -10,6 +10,7 @@ import ToolTipSidebar from "./smallComps/ToolTip";
 import { Avatar, Badge, Tabs, Typography } from "@mui/material";
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
 import { useRouter } from "next/router";
+import Account from "./smallComps/Account";
 //importing other stuffs
 
 export default function SideBar() {
@@ -44,8 +45,8 @@ export default function SideBar() {
         >
           Grocers
         </Typography>
-        <Switch defaultChecked />
       </Box>
+      <Account />
       <Box
         sx={{
           display: "flex",

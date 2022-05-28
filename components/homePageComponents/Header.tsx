@@ -12,9 +12,9 @@ const Header = () => {
         alignItems: "flex-start",
       }}
     >
-      <Typography sx={{ width: "60%" }} variant="h5">
-        <span style={{ color: "#F9A109;" }}>Shoppingify</span> allows you take
-        your shopping list wherever you go
+      <Typography sx={{ width: "60%" }} variant="h4">
+        <span style={{ color: "#F9A109" }}>Grocer</span> allows you take your
+        shopping list wherever you go
       </Typography>
       <Box
         sx={{

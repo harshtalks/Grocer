@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
-
 const signup: NextPage = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [visible, setVisible] = useState(false);
@@ -39,7 +38,7 @@ const signup: NextPage = () => {
           Sign In
         </Typography>
         <Typography textAlign={"center"} variant="body1">
-          Don't have an Account? <Link href="/signup">Sign up</Link>
+          Do not have an Account? <Link href="/signup">Sign up</Link>
         </Typography>
         <Box sx={{ marginTop: "2em", width: "100%" }}>
           <Input

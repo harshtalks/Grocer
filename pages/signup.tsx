@@ -4,10 +4,72 @@ import React, { useState } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
+import { auth } from "../lib/mutations";
+import { useRouter } from "next/router";
 
-const signup: NextPage = () => {
+const Signup: NextPage = () => {
+  const router = useRouter();
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [visible, setVisible] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [warningContent, setWarningContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  //hooks for the form
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const clearForm = () => {
+    setPassword("");
+    setEmail("");
+    setFirstName("");
+    setLastName("");
+  };
+
+  const handlerSubmit = async () => {
+    setShowWarning(false);
+    setWarningContent("");
+    setIsLoading(true);
+
+    // const result = await response.json();
+    // if (response.status === 401) {
+    //   setIsLoading(false);
+    //   setShowWarning(true);
+    //   clearForm();
+    //   setWarningContent(result.error);
+    //   return;
+    // } else {
+    //   setIsLoading(false);
+    //   router.push("/");
+    // }
+
+    try {
+      const response = await auth("signup", {
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+      });
+
+      if (response.status === 401) {
+        const result = await response.json();
+        throw new Error(result.error);
+      }
+
+      setIsLoading(false);
+      router.push("/");
+    } catch (e: any) {
+      setIsLoading(false);
+      setShowWarning(true);
+      clearForm();
+      setWarningContent(e.message);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -30,6 +92,11 @@ const signup: NextPage = () => {
           boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         }}
       >
+        {showWarning && (
+          <Alert sx={{ margin: "20px 0" }} severity="error">
+            {warningContent}
+          </Alert>
+        )}
         <Typography
           textAlign={"center"}
           gutterBottom
@@ -43,6 +110,9 @@ const signup: NextPage = () => {
         </Typography>
         <Box sx={{ marginTop: "2em", width: "100%" }}>
           <Input
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             fullWidth
             disableUnderline
@@ -63,6 +133,9 @@ const signup: NextPage = () => {
           }}
         >
           <Input
+            required
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             fullWidth
             placeholder="First Name"
             disableUnderline
@@ -75,6 +148,9 @@ const signup: NextPage = () => {
           />
 
           <Input
+            required
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             placeholder="Last Name"
             disableUnderline
             fullWidth
@@ -87,6 +163,9 @@ const signup: NextPage = () => {
           />
         </Box>
         <Input
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           fullWidth
           disableUnderline
@@ -108,16 +187,21 @@ const signup: NextPage = () => {
         >
           {visible ? "Hide" : "Show"} password
         </Button>
-        <Button
-          endIcon={<ArrowForwardOutlinedIcon />}
-          variant="outlined"
-          size="large"
-          sx={{ margin: "10px 0" }}
-        >
-          Sign Up
-        </Button>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            endIcon={<ArrowForwardOutlinedIcon />}
+            variant="outlined"
+            size="large"
+            sx={{ margin: "10px 0" }}
+            onClick={() => handlerSubmit()}
+          >
+            Sign Up
+          </Button>
+        )}
       </Box>
     </Box>
   );
 };
-export default signup;
+export default Signup;
