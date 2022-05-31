@@ -4,12 +4,14 @@ import NewItemCard from "../smallComps/NewItemCard";
 import { Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ListComponents from "./ListComponents";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 
 type shoppingListType = {
   toggleAddNewItem: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
+  const { isSmall, isSmallest } = useGetMediaQueryMatches();
   return (
     <Box
       sx={{
@@ -20,14 +22,14 @@ export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
-        padding: "4em 0",
+        padding: isSmall ? "2em 1em" : "4em 0",
       }}
     >
       <NewItemCard toggleAddNewItem={toggleAddNewItem} />
       <Box
         sx={{
           marginTop: "2rem",
-          width: "310px",
+          width: isSmall ? "100%" : "310px",
           marginLeft: "auto",
           marginRight: "auto",
         }}

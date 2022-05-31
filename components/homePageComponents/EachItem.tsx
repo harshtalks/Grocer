@@ -1,8 +1,12 @@
 import { Button, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { Item } from "@prisma/client";
 import React from "react";
+type itemType = {
+  item: Item;
+};
 
-const EachItem = () => {
+const EachItem = ({ item }: itemType) => {
   return (
     <Box
       sx={{
@@ -16,7 +20,7 @@ const EachItem = () => {
         borderRadius: "12px",
       }}
     >
-      <Typography variant="body1">Banana is a king we all love</Typography>
+      <Typography variant="body1">{item.name}</Typography>
       <Tooltip title="add item">
         <Typography color="primary" sx={{ cursor: "pointer" }}>
           +

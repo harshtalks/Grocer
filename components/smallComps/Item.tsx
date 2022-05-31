@@ -1,6 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import ToggleQuantity from "./ToggleQuantity";
 
 type itemType = {
@@ -10,6 +11,7 @@ type itemType = {
 
 const Item = ({ name, qty }: itemType) => {
   const [toggleQtyIncremental, setToggleQtyIncremental] = React.useState(false);
+  const { isSmall, isSmallest } = useGetMediaQueryMatches();
 
   const [qtyValue, setQtyValue] = React.useState(qty);
   return (
@@ -21,7 +23,7 @@ const Item = ({ name, qty }: itemType) => {
         margin: "10px 0",
       }}
     >
-      <Typography variant="h6">{name}</Typography>
+      <Typography variant={isSmall ? "body1" : "h6"}>{name}</Typography>
       {toggleQtyIncremental ? (
         <ToggleQuantity
           setToggleQtyIncremental={setToggleQtyIncremental}

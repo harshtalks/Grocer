@@ -7,8 +7,11 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Switch, Typography } from "@mui/material";
+import { CircularProgress, Switch, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import useGetUser from "../../hooks/useGetUser";
+import { format } from "date-fns";
+import { isErrored } from "stream";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,6 +24,7 @@ const Transition = React.forwardRef(function Transition(
 
 export default function Account() {
   const [open, setOpen] = React.useState(false);
+  const { user, isLoading, isError } = useGetUser();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,11 +53,27 @@ export default function Account() {
             flexDirection: "column",
           }}
         >
-          <Typography variant="h6">Harsh Pareek</Typography>
-          <Typography variant="body1">Joined on </Typography>
-          <Typography>
-            {30} Shopping Lists | {10} Completed
-          </Typography>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <>
+              {isError ? (
+                <Typography>{isError.info.error}</Typography>
+              ) : (
+                user && (
+                  <>
+                    <Typography variant="h6">{user.name}</Typography>
+                    <Typography variant="body1">
+                      Joined on:{" "}
+                      {user.createdAt &&
+                        format(new Date(user.createdAt), "MMM dd, yyyy")}
+                    </Typography>
+                    <Typography>Email: {user.email}</Typography>
+                  </>
+                )
+              )}
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Close</Button>

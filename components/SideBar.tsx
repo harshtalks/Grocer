@@ -11,20 +11,28 @@ import { Avatar, Badge, Tabs, Typography } from "@mui/material";
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
 import { useRouter } from "next/router";
 import Account from "./smallComps/Account";
+import ThemeSwitch from "./themeMode/darkMode";
+import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
 //importing other stuffs
 
-export default function SideBar() {
-  const [value, setValue] = React.useState(1);
+export default function SideBar({
+  toggleOpenSideBar,
+}: {
+  toggleOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const [value, setValue] = React.useState("1");
   const router = useRouter();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
   return (
     <Box
       sx={{
-        width: "100px",
+        width: isSmall ? "80px" : "100px",
         height: "100vh",
         background: "white",
         display: "flex",
@@ -39,12 +47,13 @@ export default function SideBar() {
     >
       <Box>
         <Typography
-          variant="h6"
+          variant={isSmall ? "body1" : "h6"}
           color="primary.main"
           sx={{ fontWeight: "bold" }}
         >
           Grocers
         </Typography>
+        {/* <ThemeSwitch /> */}
       </Box>
       <Account />
       <Box
@@ -77,7 +86,7 @@ export default function SideBar() {
             onClick={() => {
               router.push("/");
             }}
-            value={1}
+            value={"1"}
             icon={
               <ToolTipSidebar
                 title="Items"
@@ -89,7 +98,7 @@ export default function SideBar() {
             onClick={() => {
               router.push("/history");
             }}
-            value={2}
+            value={"2"}
             icon={
               <ToolTipSidebar title="History" jsxElement={<ReplayIcon />} />
             }
@@ -98,7 +107,7 @@ export default function SideBar() {
             onClick={() => {
               router.push("/stats");
             }}
-            value={3}
+            value={"3"}
             icon={
               <ToolTipSidebar
                 title="statistics"
@@ -109,9 +118,19 @@ export default function SideBar() {
         </Tabs>
       </Box>
       <Badge
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        onClick={() => toggleOpenSideBar((e) => !e)}
+        sx={{ cursor: "pointer" }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
         badgeContent={
-          <Avatar sx={{ transform: "scale(0.8)", background: "#EB5757" }}>
+          <Avatar
+            sx={{
+              transform: "scale(0.8)",
+              background: "#EB5757",
+            }}
+          >
             <Typography sx={{ fontWeight: "bold" }} variant="body1">
               10
             </Typography>

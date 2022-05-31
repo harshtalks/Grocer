@@ -1,11 +1,13 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import SummaryChart from "./Chart";
 
 const Summary = () => {
+  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
   return (
-    <Box sx={{ padding: "4rem" }}>
+    <Box sx={{ padding: isSmall ? "2rem 2rem" : "4rem" }}>
       <Typography variant="h5">Monthly Summary</Typography>
       <SummaryChart />
     </Box>

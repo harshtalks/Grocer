@@ -14,5 +14,5 @@ type dataTypeSignUp = {
 
 type dataType = dataTypeSignIn | dataTypeSignUp | undefined;
 
-export const auth = (mode: "signup" | "login", data: any) =>
+export const auth = (mode: "signup" | "signin", data: any) =>
   Fetcher(`/${mode}`, data);

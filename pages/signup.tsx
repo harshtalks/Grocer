@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Input, Link, Typography } from "@mui/material";
+import { Box, Button, Input, Link, Typography } from "@mui/material";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -8,6 +8,7 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import { auth } from "../lib/mutations";
 import { useRouter } from "next/router";
+import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
 
 const Signup: NextPage = () => {
   const router = useRouter();
@@ -23,6 +24,9 @@ const Signup: NextPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
 
+  // hooks for the styling
+  const { isMedium, isSmall, isSmallest } = useGetMediaQueryMatches();
+
   const clearForm = () => {
     setPassword("");
     setEmail("");
@@ -31,6 +35,11 @@ const Signup: NextPage = () => {
   };
 
   const handlerSubmit = async () => {
+    if (!email || !password || !firstName || !lastName) {
+      setShowWarning(true);
+      setWarningContent("All fields are required");
+      return;
+    }
     setShowWarning(false);
     setWarningContent("");
     setIsLoading(true);
@@ -55,9 +64,8 @@ const Signup: NextPage = () => {
         lastName: lastName,
       });
 
-      if (response.status === 401) {
-        const result = await response.json();
-        throw new Error(result.error);
+      if (response.error) {
+        throw new Error(response.error);
       }
 
       setIsLoading(false);
@@ -83,9 +91,10 @@ const Signup: NextPage = () => {
     >
       <Box
         sx={{
-          width: "500px",
+          maxWidth: "500px",
+          width: "80%",
           display: "flex",
-          padding: "4rem",
+          padding: isSmall ? "2rem 1rem" : "4rem",
           flexDirection: "column",
           background: "white",
           borderRadius: "1em",
@@ -112,7 +121,10 @@ const Signup: NextPage = () => {
           <Input
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setShowWarning(false);
+              setEmail(e.target.value);
+            }}
             placeholder="Email"
             fullWidth
             disableUnderline
@@ -135,7 +147,10 @@ const Signup: NextPage = () => {
           <Input
             required
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => {
+              setShowWarning(false);
+              setFirstName(e.target.value);
+            }}
             fullWidth
             placeholder="First Name"
             disableUnderline
@@ -150,7 +165,10 @@ const Signup: NextPage = () => {
           <Input
             required
             value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => {
+              setShowWarning(false);
+              setLastName(e.target.value);
+            }}
             placeholder="Last Name"
             disableUnderline
             fullWidth
@@ -165,7 +183,10 @@ const Signup: NextPage = () => {
         <Input
           required
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setShowWarning(false);
+            setPassword(e.target.value);
+          }}
           placeholder="Password"
           fullWidth
           disableUnderline

@@ -1,15 +1,17 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 
 const HeaderTitle = () => {
+  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
   return (
     <Box
       sx={{
-        padding: "4em",
+        padding: isSmall ? "4rem 2rem" : "4em",
       }}
     >
-      <Typography sx={{ width: "60%" }} variant="h4">
+      <Typography sx={{ width: isSmall ? "80%" : "60%" }} variant="h4">
         Shopping History
       </Typography>
     </Box>

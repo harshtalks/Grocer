@@ -1,7 +1,9 @@
 import { Box, Button, Input } from "@mui/material";
 import React from "react";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 
 const SaveList = () => {
+  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
   return (
     <Box
       sx={{
@@ -9,6 +11,7 @@ const SaveList = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: isSmall ? "0 10px" : "0",
       }}
     >
       <Box
@@ -22,7 +25,13 @@ const SaveList = () => {
           sx={{ padding: "10px 10px" }}
           disableUnderline
         />
-        <Button size="large" sx={{ padding: "14px 30px", fontWeight: "bold" }}>
+        <Button
+          size={isSmall ? "small" : "large"}
+          sx={{
+            padding: isSmall ? "14px 20px" : "14px 30px",
+            fontWeight: "bold",
+          }}
+        >
           Save
         </Button>
       </Box>
