@@ -22,7 +22,7 @@ export default async function Fetcher(url: string, data: any = undefined) {
     console.log(res);
 
     const error: Error = new Error(
-      "An error occurred while fetching the data."
+      res.statusText + ". An error occurred while fetching the data."
     );
     // Attach extra info to the error object.
     error.info = await res.json();

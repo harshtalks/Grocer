@@ -1,6 +1,5 @@
 import { ShoppingList, ShoppingListItem } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
-import { id } from "date-fns/locale";
 
 /** 
  * 

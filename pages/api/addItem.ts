@@ -15,6 +15,9 @@ export default validateRoute(
           categoryId: categoryId,
           imageLink: imageLink,
         },
+        include: {
+          category: true,
+        },
       });
     } catch (e) {
       console.error(e);

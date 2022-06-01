@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import ItemReducer from "./ItemReducer";
 import ListsReducer from "./listReducer";
 
 export const store = configureStore({
   reducer: {
     lists: ListsReducer,
+    item: ItemReducer,
   },
 });
 

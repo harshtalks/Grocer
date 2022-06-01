@@ -8,10 +8,11 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
+import { showItem } from "../../app/ItemReducer";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import Fetcher from "../../lib/fetcher";
 import SelectCategory from "../smallComps/SelectCategory";
-
 // Types for the TypeScript
 type inputBoxType = {
   placeholder: string;
@@ -26,6 +27,7 @@ type inputBoxType = {
 //
 type addNewItemType = {
   toggleAddNewItem: React.Dispatch<React.SetStateAction<boolean>>;
+  setAddedItem: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 // Input Box Element
@@ -69,7 +71,7 @@ const InputBox = ({
 
 // Main JSX ELEMENT
 
-const AddNewItem = ({ toggleAddNewItem }: addNewItemType) => {
+const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
   // hooks for the fields
   const [category, setCategory] = React.useState("");
   const [name, setName] = useState("");
@@ -81,6 +83,9 @@ const AddNewItem = ({ toggleAddNewItem }: addNewItemType) => {
   const [isLoading, setIsLoading] = useState(false);
   const [warningContent, setWarningContent] = useState("");
   const [showWarning, setShowWarning] = useState(false);
+
+  // reducers
+  const dispatch = useAppDispatch();
 
   const clearFields = () => {
     setName("");
@@ -116,8 +121,8 @@ const AddNewItem = ({ toggleAddNewItem }: addNewItemType) => {
         throw new Error(result.error);
       }
 
-      // close the "Add New Item" panel
-      cancelHandler();
+      dispatch(showItem(result));
+      setAddedItem((e) => !e);
     } catch (e: any) {
       console.error(e);
       setShowWarning(true);

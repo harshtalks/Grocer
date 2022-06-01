@@ -4,6 +4,7 @@ import ShoppingList from "./rightSidebarComps/ShoppingList";
 import SaveList from "./rightSidebarComps/SaveList";
 import AddNewItem from "./rightSidebarComps/AddNewItem";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
+import DisplayItem from "./rightSidebarComps/DisplayItem";
 
 interface sideBarType {
   openSideBar: boolean;
@@ -14,6 +15,7 @@ export default function RightSideBar({
   toggleOpenSideBar,
 }: sideBarType): JSX.Element {
   const [addNewItem, toggleAddNewItem] = React.useState(false);
+  const [addedItem, setAddedItem] = React.useState(false);
 
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
 
@@ -24,6 +26,7 @@ export default function RightSideBar({
           maxWidth: "390px",
           width: isSmall ? "calc(100% - 80px)" : "calc(100% - 100px)",
           height: "100vh",
+          overflow: "auto",
           background: "white",
           position: "absolute",
           right: "0",
@@ -32,7 +35,14 @@ export default function RightSideBar({
         }}
       >
         {addNewItem ? (
-          <AddNewItem toggleAddNewItem={toggleAddNewItem} />
+          addedItem ? (
+            <DisplayItem setAddedItem={setAddedItem} />
+          ) : (
+            <AddNewItem
+              toggleAddNewItem={toggleAddNewItem}
+              setAddedItem={setAddedItem}
+            />
+          )
         ) : (
           <>
             <ShoppingList toggleAddNewItem={toggleAddNewItem} />

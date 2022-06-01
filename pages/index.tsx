@@ -18,7 +18,7 @@ const Home: NextPage = () => {
     isError: errorForItems,
   } = useGetItems();
 
-  console.log(categories);
+  console.log(items);
 
   return (
     <Layout>

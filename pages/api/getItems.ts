@@ -10,6 +10,9 @@ export default validateRoute(
     try {
       items = await prisma.item.findMany({
         where: {},
+        include: {
+          category: true,
+        },
       });
       return res.json(items);
     } catch (e: any) {
