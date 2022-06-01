@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import homePageReducer from "./homePageReducer";
 import ItemReducer from "./ItemReducer";
 import ListsReducer from "./listReducer";
 
@@ -6,6 +7,7 @@ export const store = configureStore({
   reducer: {
     lists: ListsReducer,
     item: ItemReducer,
+    homePageData: homePageReducer,
   },
 });
 

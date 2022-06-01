@@ -8,6 +8,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React, { useState } from "react";
+import { loadPageData } from "../../app/homePageReducer";
 import { showItem } from "../../app/ItemReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
@@ -122,6 +123,7 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
       }
 
       dispatch(showItem(result));
+      dispatch(loadPageData());
       setAddedItem((e) => !e);
     } catch (e: any) {
       console.error(e);

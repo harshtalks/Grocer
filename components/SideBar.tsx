@@ -11,8 +11,8 @@ import { Avatar, Badge, Tabs, Typography } from "@mui/material";
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
 import { useRouter } from "next/router";
 import Account from "./smallComps/Account";
-import ThemeSwitch from "./themeMode/darkMode";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
+import { useAppSelector } from "../hooks/reduxHooks";
 //importing other stuffs
 
 export default function SideBar({
@@ -28,6 +28,8 @@ export default function SideBar({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
+  const listItems = useAppSelector((state) => state.lists.items);
 
   return (
     <Box
@@ -125,16 +127,18 @@ export default function SideBar({
           horizontal: "right",
         }}
         badgeContent={
-          <Avatar
-            sx={{
-              transform: "scale(0.8)",
-              background: "#EB5757",
-            }}
-          >
-            <Typography sx={{ fontWeight: "bold" }} variant="body1">
-              10
-            </Typography>
-          </Avatar>
+          listItems.length > 0 && (
+            <Avatar
+              sx={{
+                transform: "scale(0.8)",
+                background: "#EB5757",
+              }}
+            >
+              <Typography sx={{ fontWeight: "bold" }} variant="body1">
+                {listItems.length}
+              </Typography>
+            </Avatar>
+          )
         }
       >
         <Avatar sx={{ padding: "20px", background: "#F9A109" }}>

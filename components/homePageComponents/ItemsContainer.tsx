@@ -21,14 +21,14 @@ interface ContainerType {
   categoryName: string;
   categoryId: number;
   items: Item[];
-  isLoading: boolean;
-  isError: Error;
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error?: string;
 }
 
 const ItemsContainer = ({
   categoryName,
-  isLoading,
-  isError,
+  status,
+  error,
   items,
 }: ContainerType) => {
   // hook for media query:
@@ -39,11 +39,11 @@ const ItemsContainer = ({
         {categoryName}
       </Typography>
       <Grid container spacing={2}>
-        {isLoading ? (
+        {status === "loading" ? (
           <Grid item>
             <CircularProgress sx={{ marginLeft: "4rem" }} color="secondary" />
           </Grid>
-        ) : isError || items.length === 0 ? (
+        ) : status === "failed" || items.length === 0 ? (
           <Grid item>
             <Alert severity="error">
               No items Available under this category. Try adding item of your

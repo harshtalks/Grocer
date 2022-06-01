@@ -2,9 +2,12 @@ import { Alert, Box, CircularProgress } from "@mui/material";
 import { Category, Item } from "@prisma/client";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useEffect } from "react";
+import { loadPageData } from "../app/homePageReducer";
 import Header from "../components/homePageComponents/Header";
 import ItemsContainer from "../components/homePageComponents/ItemsContainer";
 import Layout from "../components/layout/Layout";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import useGetCategories from "../hooks/useGetCategories";
 import { useGetItems } from "../hooks/useGetItems";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
@@ -12,13 +15,22 @@ import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
 const Home: NextPage = () => {
   const { categories, isError, isLoading } = useGetCategories();
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
-  const {
-    items,
-    isLoading: loaderForItems,
-    isError: errorForItems,
-  } = useGetItems();
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.homePageData.status);
+  const items = useAppSelector((state) => state.homePageData.items);
+  const error = useAppSelector((state) => state.homePageData.error);
 
-  console.log(items);
+  useEffect(() => {
+    dispatch(loadPageData());
+  }, []);
+
+  // const {
+  //   // items,
+  //   isLoading: loaderForItems,
+  //   isError: errorForItems,
+  // } = useGetItems();
+
+  // console.log(items);
 
   return (
     <Layout>
@@ -47,8 +59,8 @@ const Home: NextPage = () => {
                       items &&
                       items.filter((el: Item) => el.categoryId === category.id)
                     }
-                    isLoading={loaderForItems}
-                    isError={errorForItems}
+                    status={status}
+                    error={error}
                     categoryName={category.name}
                     key={category.id}
                     categoryId={category.id}

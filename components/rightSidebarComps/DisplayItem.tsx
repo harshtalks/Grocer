@@ -2,8 +2,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import Image from "next/image";
+import { itemAdded } from "../../app/listReducer";
+import { imageAdd } from "../../lib/helper";
 
 interface displayDataType {
   title: string;
@@ -20,7 +22,7 @@ const ItemDisplayData = ({ title, content, isImage }: displayDataType) => {
       {isImage ? (
         <Box sx={{ width: "300px", height: "220px" }}>
           <img
-            src={content}
+            src={content ? content : imageAdd}
             alt={title}
             style={{
               objectFit: "contain",
@@ -40,6 +42,7 @@ interface typeForDisplayItem {
 
 const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
   const item = useAppSelector((state) => state.item);
+  const dispatch = useAppDispatch();
   if (!item) {
     return null;
   }
@@ -73,7 +76,15 @@ const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
       <Button sx={{ marginRight: "20px" }} color="secondary">
         Delete
       </Button>
-      <Button variant="outlined">Add to List</Button>
+      <Button
+        onClick={() => {
+          dispatch(itemAdded({ ...item, quantity: 1 }));
+          setAddedItem((e) => !e);
+        }}
+        variant="outlined"
+      >
+        Add to List
+      </Button>
     </Box>
   );
 };
