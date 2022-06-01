@@ -9,7 +9,7 @@ import Alert from "@mui/material/Alert";
 import { useRouter } from "next/router";
 import { auth } from "../lib/mutations";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
-
+import Head from "next/head";
 const Signin: NextPage = () => {
   const [visible, setVisible] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
@@ -59,56 +59,88 @@ const Signin: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        background: "linear-gradient(to right, #F37335, #FDC830)",
-      }}
-    >
+    <>
+      <Head>
+        <title>Sign In</title>
+      </Head>
       <Box
         sx={{
-          maxWidth: "500px",
-          width: "80%",
+          width: "100vw",
+          height: "100vh",
           display: "flex",
-          padding: isSmall ? "2rem 1rem" : "4rem",
-          flexDirection: "column",
-          background: "white",
-          borderRadius: "1em",
-          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "linear-gradient(to right, #F37335, #FDC830)",
         }}
       >
-        {showWarning && (
-          <Alert sx={{ margin: "20px 0" }} severity="error">
-            {warningContent}
-          </Alert>
-        )}
-        <Typography
-          textAlign={"center"}
-          gutterBottom
-          variant="h4"
-          sx={{ fontWeight: "bold" }}
+        <Box
+          sx={{
+            maxWidth: "500px",
+            width: "80%",
+            display: "flex",
+            padding: isSmall ? "2rem 1rem" : "4rem",
+            flexDirection: "column",
+            background: "white",
+            borderRadius: "1em",
+            boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+          }}
         >
-          Sign In
-        </Typography>
-        <Typography textAlign={"center"} variant="body1">
-          Do not have an Account? <Link href="/signup">Sign up</Link>
-        </Typography>
-        <Box sx={{ marginTop: "2em", width: "100%" }}>
+          <Typography
+            gutterBottom
+            textAlign={"center"}
+            color={"primary"}
+            sx={{ fontWeight: "bold" }}
+            variant="h4"
+          >
+            Grocer
+          </Typography>
+          {showWarning && (
+            <Alert sx={{ margin: "20px 0" }} severity="error">
+              {warningContent}
+            </Alert>
+          )}
+          <Typography
+            textAlign={"center"}
+            gutterBottom
+            variant="h4"
+            sx={{ fontWeight: "bold" }}
+          >
+            Sign In
+          </Typography>
+          <Typography textAlign={"center"} variant="body1">
+            Do not have an Account? <Link href="/signup">Sign up</Link>
+          </Typography>
+          <Box sx={{ marginTop: "2em", width: "100%" }}>
+            <Input
+              required
+              value={email}
+              onChange={(e) => {
+                setShowWarning(false);
+                setEmail(e.target.value);
+              }}
+              placeholder="Email"
+              fullWidth
+              disableUnderline
+              type="email"
+              sx={{
+                background: "#EBEBEB",
+                padding: "5px 10px",
+                borderRadius: "10px",
+                margin: "10px 0",
+              }}
+            />
+          </Box>
           <Input
             required
-            value={email}
+            value={password}
             onChange={(e) => {
               setShowWarning(false);
-              setEmail(e.target.value);
+              setPassword(e.target.value);
             }}
-            placeholder="Email"
+            placeholder="Password"
             fullWidth
             disableUnderline
-            type="email"
+            type={visible ? "text" : "password"}
             sx={{
               background: "#EBEBEB",
               padding: "5px 10px",
@@ -116,51 +148,37 @@ const Signin: NextPage = () => {
               margin: "10px 0",
             }}
           />
-        </Box>
-        <Input
-          required
-          value={password}
-          onChange={(e) => {
-            setShowWarning(false);
-            setPassword(e.target.value);
-          }}
-          placeholder="Password"
-          fullWidth
-          disableUnderline
-          type={visible ? "text" : "password"}
-          sx={{
-            background: "#EBEBEB",
-            padding: "5px 10px",
-            borderRadius: "10px",
-            margin: "10px 0",
-          }}
-        />
-        <Button
-          onClick={() => setVisible(!visible)}
-          size="small"
-          color="secondary"
-          sx={{ width: "fit-content", margin: "5px 0" }}
-          endIcon={
-            visible ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />
-          }
-        >
-          {visible ? "Hide" : "Show"} password
-        </Button>
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
           <Button
-            endIcon={<ArrowForwardOutlinedIcon />}
-            variant="outlined"
-            size="large"
-            sx={{ margin: "10px 0" }}
-            onClick={() => handlerSubmit()}
+            onClick={() => setVisible(!visible)}
+            size="small"
+            color="secondary"
+            sx={{ width: "fit-content", margin: "5px 0" }}
+            endIcon={
+              visible ? (
+                <VisibilityOffOutlinedIcon />
+              ) : (
+                <VisibilityOutlinedIcon />
+              )
+            }
           >
-            Sign In
+            {visible ? "Hide" : "Show"} password
           </Button>
-        )}
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              endIcon={<ArrowForwardOutlinedIcon />}
+              variant="outlined"
+              size="large"
+              sx={{ margin: "10px 0" }}
+              onClick={() => handlerSubmit()}
+            >
+              Sign In
+            </Button>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 export default Signin;

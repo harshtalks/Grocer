@@ -19,6 +19,8 @@ export default async function Fetcher(url: string, data: any = undefined) {
   });
 
   if (!res.ok) {
+    console.log(res);
+
     const error: Error = new Error(
       "An error occurred while fetching the data."
     );

@@ -1,6 +1,7 @@
 import { Alert, Box, CircularProgress } from "@mui/material";
 import { Category, Item } from "@prisma/client";
 import type { NextPage } from "next";
+import Head from "next/head";
 import Header from "../components/homePageComponents/Header";
 import ItemsContainer from "../components/homePageComponents/ItemsContainer";
 import Layout from "../components/layout/Layout";
@@ -21,6 +22,9 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Home</title>
+      </Head>
       <Box sx={{ overflow: "auto", height: "100vh" }}>
         <Header />
         {isLoading ? (
