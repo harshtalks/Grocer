@@ -1,9 +1,13 @@
 import { Box, Button, Input } from "@mui/material";
 import React from "react";
+import { setName } from "../../app/listReducer";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 
 const SaveList = () => {
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
+  const [name, toggleName] = React.useState("");
+  const dispatch = useAppDispatch();
   return (
     <Box
       sx={{
@@ -11,6 +15,7 @@ const SaveList = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexWrap: "nowrap",
         padding: isSmall ? "0 10px" : "0",
       }}
     >
@@ -22,14 +27,20 @@ const SaveList = () => {
       >
         <Input
           placeholder="Add Name"
-          sx={{ padding: "10px 10px" }}
+          fullWidth={false}
+          sx={{ padding: isSmall ? "10px 5px" : "10px" }}
           disableUnderline
+          value={name}
+          onChange={(e) => toggleName(e.target.value)}
         />
         <Button
           size={isSmall ? "small" : "large"}
           sx={{
-            padding: isSmall ? "14px 20px" : "14px 30px",
+            padding: isSmall ? "14px 10px" : "14px 30px",
             fontWeight: "bold",
+          }}
+          onClick={() => {
+            dispatch(setName(name));
           }}
         >
           Save

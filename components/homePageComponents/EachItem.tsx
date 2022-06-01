@@ -1,9 +1,9 @@
 import { Button, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Item } from "@prisma/client";
-import React, { useEffect } from "react";
-import { showItem } from "../../app/ItemReducer";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import React from "react";
+import { itemAdded } from "../../app/listReducer";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 
 type itemType = {
   item: Item;
@@ -11,9 +11,7 @@ type itemType = {
 
 const EachItem = ({ item }: itemType) => {
   const dispatch = useAppDispatch();
-  const itemData = useAppSelector((state) => state.item);
 
-  useEffect(() => console.log(itemData), [itemData]);
   return (
     <Box
       sx={{
@@ -30,11 +28,7 @@ const EachItem = ({ item }: itemType) => {
       <Typography variant="body1">{item.name}</Typography>
       <Tooltip
         onClick={() => {
-          dispatch(
-            showItem({
-              ...item,
-            })
-          );
+          dispatch(itemAdded({ ...item, quantity: 1 }));
         }}
         title="add item"
       >

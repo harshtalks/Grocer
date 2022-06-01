@@ -1,10 +1,11 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import NewItemCard from "../smallComps/NewItemCard";
-import { Typography } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ListComponents from "./ListComponents";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 type shoppingListType = {
   toggleAddNewItem: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,11 @@ type shoppingListType = {
 
 export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
+  const listData = useAppSelector((state) => state.lists.items);
+
+  let list = listData.map((el) => el.category.name);
+  list = list.filter((x, i, a) => a.indexOf(x) === i);
+
   return (
     <Box
       sx={{
@@ -46,11 +52,16 @@ export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
           </Typography>
           <EditIcon />
         </Box>
-        <ListComponents listItemsType="Foods and Vegetables" />
-        <ListComponents listItemsType="Foods and Vegetables" />
-        <ListComponents listItemsType="Foods and Vegetables" />
-        <ListComponents listItemsType="Foods and Vegetables" />
-        <ListComponents listItemsType="Foods and Vegetables" />
+
+        {list.length > 0 ? (
+          list.map((item) => {
+            return <ListComponents key={item} listItemsType={item} />;
+          })
+        ) : (
+          <Alert sx={{ marginTop: "2em" }} severity="warning">
+            No items have been Selected. Please Choose
+          </Alert>
+        )}
       </Box>
     </Box>
   );

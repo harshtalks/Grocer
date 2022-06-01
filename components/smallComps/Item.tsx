@@ -7,9 +7,10 @@ import ToggleQuantity from "./ToggleQuantity";
 type itemType = {
   name: string;
   qty: number;
+  id: number;
 };
 
-const Item = ({ name, qty }: itemType) => {
+const Item = ({ name, qty, id }: itemType) => {
   const [toggleQtyIncremental, setToggleQtyIncremental] = React.useState(false);
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
 
@@ -26,6 +27,7 @@ const Item = ({ name, qty }: itemType) => {
       <Typography variant={isSmall ? "body1" : "h6"}>{name}</Typography>
       {toggleQtyIncremental ? (
         <ToggleQuantity
+          id={id}
           setToggleQtyIncremental={setToggleQtyIncremental}
           quantity={qtyValue}
           setQuantity={setQtyValue}
