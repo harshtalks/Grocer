@@ -55,8 +55,13 @@ const SummaryChart = () => {
         ],
         datasets: [
           {
+            borderColor: "#F9A109",
             id: 1,
             label: "",
+            borderWidth: 1,
+            lineTension: 0.4,
+            showLine: true,
+            pointRadius: 1,
             data: [100, 29, 209, 397, 2982, 27, 2092, 459, 293, 1903, 102, 780],
           },
         ],

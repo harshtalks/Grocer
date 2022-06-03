@@ -7,7 +7,7 @@ import SummaryChart from "./Chart";
 const Summary = () => {
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
   return (
-    <Box sx={{ padding: isSmall ? "2rem 2rem" : "4rem" }}>
+    <Box sx={{ padding: isSmall ? "0rem 1rem" : "4rem" }}>
       <Typography variant="h5">Monthly Summary</Typography>
       <SummaryChart />
     </Box>
