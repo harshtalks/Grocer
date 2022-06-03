@@ -3,6 +3,7 @@ import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { clearEverything, setName } from "../../app/listReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
@@ -117,6 +118,7 @@ const SaveList = () => {
         <LoadingButton
           loading={isLoading}
           loadingPosition="start"
+          startIcon={<SaveAsOutlinedIcon />}
           disabled={itemLists.items.length === 0 || name === ""}
           size={isSmall ? "small" : "large"}
           sx={{

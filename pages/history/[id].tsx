@@ -5,13 +5,21 @@ import React from "react";
 import Layout from "../../components/layout/Layout";
 import DateRangeOutlinedIcon from "@mui/icons-material/DateRangeOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useRouter } from "next/router";
 
 const Details = () => {
+  const router = useRouter();
   return (
     <Layout>
       <Box sx={{ overflow: "auto", height: "100vh" }}>
         <Box sx={{ padding: "4rem" }}>
-          <Button startIcon={<ArrowBackIcon />} size="large">
+          <Button
+            onClick={() => {
+              router.back();
+            }}
+            startIcon={<ArrowBackIcon />}
+            size="large"
+          >
             Back
           </Button>
           <Box sx={{ margin: "2em 0" }}>

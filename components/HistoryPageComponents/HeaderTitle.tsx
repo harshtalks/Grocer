@@ -8,7 +8,7 @@ const HeaderTitle = () => {
   return (
     <Box
       sx={{
-        padding: isSmall ? "4rem 2rem" : "4em",
+        padding: isSmall ? "4rem 1rem" : "4em",
       }}
     >
       <Typography sx={{ width: isSmall ? "80%" : "60%" }} variant="h4">

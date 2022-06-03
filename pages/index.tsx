@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       <Box sx={{ overflow: "auto", height: "100vh" }}>
         <Header />
         {isLoading ? (
-          <CircularProgress sx={{ marginLeft: "4rem" }} />
+          <CircularProgress sx={{ marginLeft: isSmall ? "1rem" : "4rem" }} />
         ) : (
           <>
             {isError ? (
