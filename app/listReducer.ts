@@ -20,12 +20,14 @@ model ShoppingList {
 type ShoppingListType = {
   name: string;
   ownerId?: number;
+  edit: boolean;
   items: Array<Item & { quantity: number } & { category: Category }>;
 };
 
 export const initialState: ShoppingListType = {
   name: "",
   items: [],
+  edit: false,
 };
 
 const listSlice = createSlice({
@@ -79,6 +81,10 @@ const listSlice = createSlice({
       state.name = "";
       return state;
     },
+    editList(state) {
+      state.edit = !state.edit;
+      return state;
+    },
   },
 });
 
@@ -89,6 +95,7 @@ export const {
   deleteItem,
   setName,
   clearEverything,
+  editList,
 } = listSlice.actions;
 
 export default listSlice.reducer;

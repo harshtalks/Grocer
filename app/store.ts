@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import historyPageReducer from "./historyPageReducer";
 import homePageReducer from "./homePageReducer";
-import IdpageReducer from "./IdpageReducer";
 import ItemReducer from "./ItemReducer";
 import ListsReducer from "./listReducer";
 
@@ -11,7 +10,6 @@ export const store = configureStore({
     item: ItemReducer,
     homePageData: homePageReducer,
     historyPageData: historyPageReducer,
-    idPageData: IdpageReducer,
   },
 });
 

@@ -5,7 +5,8 @@ import { Alert, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ListComponents from "./ListComponents";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { editList } from "../../app/listReducer";
 
 type shoppingListType = {
   toggleAddNewItem: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,8 @@ type shoppingListType = {
 export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
   const listData = useAppSelector((state) => state.lists.items);
+
+  const dispatch = useAppDispatch();
 
   let list = listData.map((el) => el.category.name);
   list = list.filter((x, i, a) => a.indexOf(x) === i);
@@ -50,7 +53,10 @@ export default function ShoppingList({ toggleAddNewItem }: shoppingListType) {
           <Typography variant="h5" sx={{ fontWeight: "bold" }}>
             Shopping List
           </Typography>
-          <EditIcon />
+          <EditIcon
+            onClick={() => dispatch(editList())}
+            sx={{ cursor: "pointer" }}
+          />
         </Box>
 
         {list.length > 0 ? (

@@ -1,12 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/no-unescaped-entities */
 import { Button, Typography, Alert } from "@mui/material";
-import {
-  GetServerSideProps,
-  GetStaticPaths,
-  GetStaticProps,
-  NextApiRequest,
-} from "next";
+import { GetServerSideProps } from "next";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import Layout from "../../components/layout/Layout";
@@ -15,17 +10,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useRouter } from "next/router";
 import ListItemContainer from "../../components/ListPageComponents/ItemContainer";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import Fetcher from "../../lib/fetcher";
-import { loadIdPageData } from "../../app/IdpageReducer";
-import absoluteUrl from "next-absolute-url";
-import { validateToken } from "../../protection/auth";
 import prisma from "../../utils/prisma";
 import { format } from "date-fns";
 import { Category, ShoppingItem } from "@prisma/client";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { clearEverything, itemAdded } from "../../app/listReducer";
 
 const Details = (props: any) => {
   const router = useRouter();
+  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
+  const dispatch = useAppDispatch();
   const data = JSON.parse(props.data);
   const error = props.error;
   const categories = data
@@ -38,8 +32,18 @@ const Details = (props: any) => {
         }
       })
     : null;
-  console.log(categories);
-  const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
+
+  //function
+  const addBackToList = () => {
+    data &&
+      data.items.forEach((el: any) => {
+        dispatch(clearEverything());
+        dispatch(itemAdded(el));
+      });
+  };
+
+  // addBackToList();
+
   return (
     <Layout>
       <Box sx={{ overflow: "auto", height: "100vh" }}>

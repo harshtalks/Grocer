@@ -1,6 +1,7 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Checkbox, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import ToggleQuantity from "./ToggleQuantity";
 
@@ -13,6 +14,7 @@ type itemType = {
 const Item = ({ name, qty, id }: itemType) => {
   const [toggleQtyIncremental, setToggleQtyIncremental] = React.useState(false);
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
+  const edit = useAppSelector((state) => state.lists.edit);
 
   const [qtyValue, setQtyValue] = React.useState(qty);
   return (
@@ -24,14 +26,30 @@ const Item = ({ name, qty, id }: itemType) => {
         margin: "10px 0",
       }}
     >
-      <Typography variant={isSmall ? "body1" : "h6"}>{name}</Typography>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "0" }}>
+        {edit && <Checkbox />}
+        <Typography variant={isSmall ? "body1" : "h6"}>
+          {name[0].toUpperCase() + name.slice(1)}
+        </Typography>
+      </Box>
       {toggleQtyIncremental ? (
-        <ToggleQuantity
-          id={id}
-          setToggleQtyIncremental={setToggleQtyIncremental}
-          quantity={qtyValue}
-          setQuantity={setQtyValue}
-        />
+        edit ? (
+          <Button
+            disabled
+            size="small"
+            sx={{ borderRadius: "20px", fontSize: "12px" }}
+            variant="outlined"
+          >
+            {qtyValue} pcs
+          </Button>
+        ) : (
+          <ToggleQuantity
+            id={id}
+            setToggleQtyIncremental={setToggleQtyIncremental}
+            quantity={qtyValue}
+            setQuantity={setQtyValue}
+          />
+        )
       ) : (
         <Button
           onClick={() => setToggleQtyIncremental(!toggleQtyIncremental)}

@@ -5,6 +5,8 @@ import SaveList from "./rightSidebarComps/SaveList";
 import AddNewItem from "./rightSidebarComps/AddNewItem";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
 import DisplayItem from "./rightSidebarComps/DisplayItem";
+import { useAppSelector } from "../hooks/reduxHooks";
+import EditListActions from "./smallComps/EditListActions";
 
 interface sideBarType {
   openSideBar: boolean;
@@ -16,6 +18,7 @@ export default function RightSideBar({
 }: sideBarType): JSX.Element {
   const [addNewItem, toggleAddNewItem] = React.useState(false);
   const [addedItem, setAddedItem] = React.useState(false);
+  const edit = useAppSelector((state) => state.lists.edit);
 
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
 
@@ -46,7 +49,7 @@ export default function RightSideBar({
         ) : (
           <>
             <ShoppingList toggleAddNewItem={toggleAddNewItem} />
-            <SaveList />
+            {edit ? <EditListActions /> : <SaveList />}
           </>
         )}
       </Box>
