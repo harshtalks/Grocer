@@ -22,15 +22,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     dispatch(loadPageData());
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, []);
-
-  // const {
-  //   // items,
-  //   isLoading: loaderForItems,
-  //   isError: errorForItems,
-  // } = useGetItems();
-
-  // console.log(items);
 
   return (
     <Layout>
@@ -50,8 +43,7 @@ const Home: NextPage = () => {
               >
                 Error in fetching categories
               </Alert>
-            ) : (
-              categories &&
+            ) : categories.length > 0 ? (
               categories.map((category: Category) => {
                 return (
                   <ItemsContainer
@@ -67,6 +59,14 @@ const Home: NextPage = () => {
                   />
                 );
               })
+            ) : (
+              <Alert
+                sx={{ margin: isSmall ? "2rem 2rem" : "2rem 4rem" }}
+                severity="error"
+              >
+                No Items Available, Please contact admin to add categories.{" "}
+                <br /> contact: harshpareek91@gmail.com
+              </Alert>
             )}
           </>
         )}

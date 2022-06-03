@@ -34,7 +34,7 @@ const ItemsContainer = ({
   // hook for media query:
   const { isMedium, isSmall, isSmallest } = useGetMediaQueryMatches();
   return (
-    <Box sx={{ padding: isSmall ? "0 2em" : "0 4em", marginBottom: "2rem" }}>
+    <Box sx={{ padding: isSmall ? "0 1em" : "0 4em", marginBottom: "2rem" }}>
       <Typography sx={{ marginBottom: "20px" }} variant="body1">
         {categoryName}
       </Typography>

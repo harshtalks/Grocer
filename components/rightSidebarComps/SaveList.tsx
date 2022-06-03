@@ -3,11 +3,13 @@ import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { setName } from "../../app/listReducer";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { clearEverything, setName } from "../../app/listReducer";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
+import Fetcher from "../../lib/fetcher";
 
-function SnackBar({ open, setOpen }: snackType) {
+function SnackBar({ open, setOpen, content }: snackType) {
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: string
@@ -38,7 +40,7 @@ function SnackBar({ open, setOpen }: snackType) {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="List Saved"
+        message={content}
         action={action}
       />
     </div>
@@ -48,10 +50,40 @@ function SnackBar({ open, setOpen }: snackType) {
 const SaveList = () => {
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
   const [name, toggleName] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
   const dispatch = useAppDispatch();
+  const [snackBarContent, setSnackBarContent] = React.useState("");
+  const itemLists = useAppSelector((state) => state.lists);
 
   // snackbar
   const [open, setOpen] = React.useState(false);
+
+  const submitHandler = async () => {
+    dispatch(setName(name));
+    setIsLoading(true);
+    // try and catch
+
+    try {
+      const result = await Fetcher("/addShoppingList", {
+        name: name,
+        items: itemLists.items,
+      });
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      //clearing Fields
+      dispatch(clearEverything());
+      setName("");
+      setIsLoading(false);
+      setOpen(true);
+      setSnackBarContent("List is Saved");
+    } catch (e: any) {
+      setIsLoading(false);
+      setSnackBarContent(e.error);
+    }
+  };
 
   const handleClick = () => {
     setOpen(true);
@@ -63,6 +95,7 @@ const SaveList = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        background: isSmall ? "inherit" : "white",
         flexWrap: "nowrap",
         padding: isSmall ? "0 10px" : "0",
       }}
@@ -81,21 +114,21 @@ const SaveList = () => {
           value={name}
           onChange={(e) => toggleName(e.target.value)}
         />
-        <Button
+        <LoadingButton
+          loading={isLoading}
+          loadingPosition="start"
+          disabled={itemLists.items.length === 0 || name === ""}
           size={isSmall ? "small" : "large"}
           sx={{
             padding: isSmall ? "14px 10px" : "14px 30px",
             fontWeight: "bold",
           }}
-          onClick={() => {
-            dispatch(setName(name));
-            handleClick();
-          }}
+          onClick={submitHandler}
         >
           Save
-        </Button>
+        </LoadingButton>
       </Box>
-      <SnackBar open={open} setOpen={setOpen} />
+      <SnackBar open={open} setOpen={setOpen} content={snackBarContent} />
     </Box>
   );
 };
@@ -103,6 +136,7 @@ const SaveList = () => {
 interface snackType {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  content: string;
 }
 
 export default SaveList;

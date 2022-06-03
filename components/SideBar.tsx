@@ -127,6 +127,7 @@ export default function SideBar({
           horizontal: "right",
         }}
         badgeContent={
+          listItems &&
           listItems.length > 0 && (
             <Avatar
               sx={{

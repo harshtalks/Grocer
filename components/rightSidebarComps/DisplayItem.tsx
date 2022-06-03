@@ -20,7 +20,13 @@ const ItemDisplayData = ({ title, content, isImage }: displayDataType) => {
         {title}
       </Typography>
       {isImage ? (
-        <Box sx={{ width: "300px", height: "220px" }}>
+        <Box
+          sx={{
+            width: "300px",
+            height: "220px",
+            boxSshadow: "rgba(149, 157, 165, 0.2) 0px 8px 24px",
+          }}
+        >
           <img
             src={content ? content : imageAdd}
             alt={title}

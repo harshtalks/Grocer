@@ -28,7 +28,9 @@ model ShoppingList {
   name    String 
   owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int
-  items ShoppingListItem[]
+  items ShoppingItem[]
+  isCompleted Boolean
+  completedDate String?
 }
 
 model Category {
@@ -36,6 +38,7 @@ model Category {
   createdAt DateTime @default(now())
   name  String
   items Item[]
+  shoppingListItem ShoppingItem[]
 }
 
 model Item {
@@ -46,13 +49,17 @@ model Item {
   imageLink String
   category Category @relation(fields: [categoryId], references: [id])
   categoryId Int
-  referencedItems ShoppingListItem[]
 }
 
-model ShoppingListItem {
+model ShoppingItem {
   id      Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  item Item[] @relation(references: [id])
+  name    String
+  description String
+  imageLink String
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
   quantity Int
-  lists ShoppingList[] @relation( references: [id])
+  shoppingList ShoppingList[]
 }
+

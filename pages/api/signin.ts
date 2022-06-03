@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import cookie from "cookie";
 import jwt from "jsonwebtoken";
@@ -18,11 +18,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (e: any) {
     res.status(401);
     res.json({
-      error: "Invalid Credentials, Please check your entered email or password",
+      error: e.message,
     });
-    return;
   }
-
   if (user && bcrypt.compareSync(password, user.password)) {
     const token = jwt.sign(
       {
@@ -45,7 +43,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         secure: process.env.NODE_ENV === "production",
       })
     );
-    res.json(user);
+
+    return res.json(user);
   } else {
     res.status(401);
     res.json({

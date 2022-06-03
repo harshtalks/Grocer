@@ -11,7 +11,7 @@ const Header = () => {
     <Box
       sx={{
         display: "flex",
-        padding: isSmall ? "2em" : "4em",
+        padding: isSmall ? "1em" : "4em",
         flexDirection: isSmall ? "column" : "row",
         justifyContent: "space-between",
         alignItems: "flex-start",

@@ -4,6 +4,7 @@ import { Item } from "@prisma/client";
 import React from "react";
 import { itemAdded } from "../../app/listReducer";
 import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 
 type itemType = {
   item: Item;
@@ -11,13 +12,15 @@ type itemType = {
 
 const EachItem = ({ item }: itemType) => {
   const dispatch = useAppDispatch();
+  const { isSmall, isSmallest } = useGetMediaQueryMatches();
 
   return (
     <Box
       sx={{
         display: "flex",
-        width: "180px",
+        width: isSmall ? "fit-content" : "150px",
         justifyContent: "space-between",
+        gap: isSmall ? "1em" : "0",
         padding: "10px 20px",
         background: "white",
         alignItems: "flex-start",

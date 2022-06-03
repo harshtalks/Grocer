@@ -19,7 +19,7 @@ export default validateRoute(
       console.error(e);
       res.status(401);
       res.json({
-        error: e ? e : "Error in fetching the items",
+        error: e ? e.message : "Error in fetching the items",
       });
       return;
     }

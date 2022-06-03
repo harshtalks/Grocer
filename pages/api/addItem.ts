@@ -19,10 +19,10 @@ export default validateRoute(
           category: true,
         },
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
       res.status(401);
-      res.json({ error: e ? e : "Error in Creating the Item" });
+      res.json({ error: e ? e.message : "Error in Creating the Item" });
       return;
     }
 

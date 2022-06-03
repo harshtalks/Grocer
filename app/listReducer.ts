@@ -1,4 +1,4 @@
-import { Category, Item, ShoppingList, ShoppingListItem } from "@prisma/client";
+import { Category, Item, ShoppingList } from "@prisma/client";
 import { createSlice } from "@reduxjs/toolkit";
 
 /** 
@@ -74,6 +74,11 @@ const listSlice = createSlice({
       state.name = action.payload;
       return state;
     },
+    clearEverything(state) {
+      state.items = [];
+      state.name = "";
+      return state;
+    },
   },
 });
 
@@ -83,6 +88,7 @@ export const {
   decreaseQuantity,
   deleteItem,
   setName,
+  clearEverything,
 } = listSlice.actions;
 
 export default listSlice.reducer;

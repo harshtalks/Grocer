@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import cookie from "cookie";
 import prisma from "../../utils/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
+import { Prisma } from "@prisma/client";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,11 +22,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   } catch (e: any) {
     res.status(401);
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
+      if (e.code === "P2002") {
+        res.json({
+          error:
+            "Account already exists with this email id. Please use different email id to continue.",
+        });
+      }
+    }
     res.json({
-      error:
-        "User already exists with the provided Email Account, Please Use different Email ID",
+      error: e.message,
     });
-    return;
+    return res;
   }
 
   const token = jwt.sign(

@@ -18,17 +18,5 @@ export default async function Fetcher(url: string, data: any = undefined) {
     body: data ? JSON.stringify(data) : undefined,
   });
 
-  if (!res.ok) {
-    console.log(res);
-
-    const error: Error = new Error(
-      res.statusText + ". An error occurred while fetching the data."
-    );
-    // Attach extra info to the error object.
-    error.info = await res.json();
-    error.status = res.status;
-    throw error;
-  }
-
   return res.json();
 }
