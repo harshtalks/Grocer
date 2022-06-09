@@ -1,5 +1,6 @@
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
+import { useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import RightSideBar from "../RightSidebar";
 import SideBar from "../SideBar";
@@ -13,6 +14,7 @@ const Layout = ({ children }: layoutType) => {
 
   const { isMedium, isSmall, isSmallest } = useGetMediaQueryMatches();
   const [openSideBar, toggleOpenSideBar] = useState(false);
+  const sidebarOpen = useAppSelector((state) => state.layout.sidebarOpen);
 
   useEffect(() => {
     if (isSmallest) {
@@ -22,7 +24,7 @@ const Layout = ({ children }: layoutType) => {
 
   return (
     <div>
-      <SideBar toggleOpenSideBar={toggleOpenSideBar} />
+      <SideBar />
       {isMedium ? (
         <>
           <Box
@@ -33,12 +35,7 @@ const Layout = ({ children }: layoutType) => {
           >
             {children}
           </Box>
-          {openSideBar && (
-            <RightSideBar
-              openSideBar={openSideBar}
-              toggleOpenSideBar={toggleOpenSideBar}
-            />
-          )}
+          {sidebarOpen && <RightSideBar />}
         </>
       ) : (
         <>
@@ -50,12 +47,7 @@ const Layout = ({ children }: layoutType) => {
           >
             {children}
           </Box>
-          {
-            <RightSideBar
-              openSideBar={openSideBar}
-              toggleOpenSideBar={toggleOpenSideBar}
-            />
-          }
+          {<RightSideBar />}
         </>
       )}
     </div>

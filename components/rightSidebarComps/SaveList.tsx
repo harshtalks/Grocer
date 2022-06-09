@@ -76,9 +76,9 @@ const SaveList = () => {
 
       //clearing Fields
       dispatch(clearEverything());
-      setName("");
       setIsLoading(false);
       setOpen(true);
+      setName("");
       setSnackBarContent("List is Saved");
     } catch (e: any) {
       setIsLoading(false);

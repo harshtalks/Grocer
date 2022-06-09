@@ -2,6 +2,8 @@ import { Button, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Item } from "@prisma/client";
 import React from "react";
+import { showDisplayCard, showItem } from "../../app/ItemReducer";
+import { toggleSideBar } from "../../app/layoutReducer";
 import { itemAdded } from "../../app/listReducer";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
@@ -31,7 +33,9 @@ const EachItem = ({ item }: itemType) => {
       <Typography variant="body1">{item.name}</Typography>
       <Tooltip
         onClick={() => {
-          dispatch(itemAdded({ ...item, quantity: 1 }));
+          dispatch(showItem(item));
+          dispatch(showDisplayCard());
+          dispatch(toggleSideBar());
         }}
         title="add item"
       >

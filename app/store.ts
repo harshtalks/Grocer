@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import historyPageReducer from "./historyPageReducer";
 import homePageReducer from "./homePageReducer";
 import ItemReducer from "./ItemReducer";
+import layoutReducer from "./layoutReducer";
 import ListsReducer from "./listReducer";
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     item: ItemReducer,
     homePageData: homePageReducer,
     historyPageData: historyPageReducer,
+    layout: layoutReducer,
   },
 });
 

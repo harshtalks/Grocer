@@ -12,16 +12,14 @@ import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTo
 import { useRouter } from "next/router";
 import Account from "./smallComps/Account";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { toggleSideBar } from "../app/layoutReducer";
 //importing other stuffs
 
-export default function SideBar({
-  toggleOpenSideBar,
-}: {
-  toggleOpenSideBar: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function SideBar() {
   const [value, setValue] = React.useState("1");
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   const { isSmall, isSmallest, isMedium } = useGetMediaQueryMatches();
 
@@ -120,7 +118,7 @@ export default function SideBar({
         </Tabs>
       </Box>
       <Badge
-        onClick={() => toggleOpenSideBar((e) => !e)}
+        onClick={() => dispatch(toggleSideBar())}
         sx={{ cursor: "pointer" }}
         anchorOrigin={{
           vertical: "top",

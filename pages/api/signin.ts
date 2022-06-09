@@ -28,7 +28,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         id: user.id,
         time: Date.now(),
       },
-      "sks",
+      process.env.NEXT_PUBLIC_KEY as string,
       { expiresIn: "8h" }
     );
 

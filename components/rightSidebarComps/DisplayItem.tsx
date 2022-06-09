@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import { Alert, Box, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import Image from "next/image";
 import { itemAdded } from "../../app/listReducer";
 import { imageAdd } from "../../lib/helper";
+import { showDisplayCard } from "../../app/ItemReducer";
 
 interface displayDataType {
   title: string;
@@ -28,6 +28,8 @@ const ItemDisplayData = ({ title, content, isImage }: displayDataType) => {
           }}
         >
           <img
+            width={"300px"}
+            height={"220px"}
             src={content ? content : imageAdd}
             alt={title}
             style={{
@@ -48,7 +50,42 @@ interface typeForDisplayItem {
 
 const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
   const item = useAppSelector((state) => state.item);
+  const [image, setImage] = useState("");
   const dispatch = useAppDispatch();
+  const shoppingList = useAppSelector((state) => state.lists);
+
+  useEffect(() => {
+    const query = item.name.toLowerCase();
+    getImage(query);
+  }, [item]);
+
+  const doesItContain = () => {
+    const name = item.name;
+    const list = shoppingList.items.find((item) => item.name === name);
+
+    if (list) {
+      return true;
+    } else return false;
+  };
+
+  const getImage = async (query: string) => {
+    try {
+      const res = await fetch(`${window.location.origin}/api/getImage`, {
+        method: "POST",
+        body: JSON.stringify({ query: query }, null, 2),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const result = await res.json();
+      setImage(result.results[0].urls.thumb);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (!item) {
     return null;
   }
@@ -56,17 +93,18 @@ const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
   return (
     <Box sx={{ padding: "2rem" }}>
       <Button
-        onClick={() => setAddedItem((e) => !e)}
+        onClick={() => dispatch(showDisplayCard())}
         size="medium"
         startIcon={<ArrowBackIcon />}
       >
         Back
       </Button>
-      <ItemDisplayData
-        isImage={true}
-        title={"Image"}
-        content={item.imageLink}
-      />
+      {doesItContain() && (
+        <Alert sx={{ marginTop: "10px" }} severity="success">
+          This Item is already added to the list.
+        </Alert>
+      )}
+      <ItemDisplayData isImage={true} title={"Image"} content={image} />
       <ItemDisplayData isImage={false} title={"Name"} content={item.name} />
       <ItemDisplayData
         isImage={false}
@@ -79,13 +117,20 @@ const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
         content={item.description}
       />
 
-      <Button sx={{ marginRight: "20px" }} color="secondary">
-        Delete
-      </Button>
       <Button
         onClick={() => {
+          dispatch(showDisplayCard());
+        }}
+        sx={{ marginRight: "20px" }}
+        color="secondary"
+      >
+        Cancel
+      </Button>
+      <Button
+        disabled={doesItContain()}
+        onClick={() => {
+          dispatch(showDisplayCard());
           dispatch(itemAdded({ ...item, quantity: 1 }));
-          setAddedItem((e) => !e);
         }}
         variant="outlined"
       >

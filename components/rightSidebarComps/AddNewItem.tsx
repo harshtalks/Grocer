@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { loadPageData } from "../../app/homePageReducer";
-import { showItem } from "../../app/ItemReducer";
+import { showDisplayCard, showItem } from "../../app/ItemReducer";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { useGetMediaQueryMatches } from "../../hooks/useGetMediaQueryMatches";
 import Fetcher from "../../lib/fetcher";
@@ -77,7 +77,6 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
   const [category, setCategory] = React.useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [imageLink, setImageLink] = useState("");
   const { isSmall, isSmallest } = useGetMediaQueryMatches();
 
   // UI Hooks
@@ -91,7 +90,6 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
   const clearFields = () => {
     setName("");
     setDescription("");
-    setImageLink("");
     setCategory("");
   };
 
@@ -101,7 +99,7 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
   };
 
   const submitHandler = async () => {
-    if (!name || !description || !imageLink || !category) {
+    if (!name || !description || !category) {
       setWarningContent("All fields are mandatory.");
       setShowWarning(true);
       return;
@@ -114,7 +112,7 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
       const result = await Fetcher("/addItem", {
         name: name,
         description: description,
-        imageLink: imageLink,
+        imageLink: "",
         categoryId: +category,
       });
 
@@ -125,6 +123,7 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
       dispatch(showItem(result));
       dispatch(loadPageData());
       setAddedItem((e) => !e);
+      dispatch(showDisplayCard());
     } catch (e: any) {
       console.error(e);
       setShowWarning(true);
@@ -169,15 +168,7 @@ const AddNewItem = ({ toggleAddNewItem, setAddedItem }: addNewItemType) => {
         multiline={true}
         label="Description (Optional)"
       />
-      <InputBox
-        warningLabel={setShowWarning}
-        value={imageLink}
-        setValue={setImageLink}
-        placeholder={"Enter image link"}
-        type="text"
-        multiline={false}
-        label="Link"
-      />
+
       <Box sx={{ margin: "20px 0", width: "100%", color: "#34333A" }}>
         <Typography gutterBottom variant="body1">
           Select Category
