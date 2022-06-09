@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { itemAdded } from "../../app/listReducer";
 import { imageAdd } from "../../lib/helper";
 import { showDisplayCard } from "../../app/ItemReducer";
+import { toggleSideBar } from "../../app/layoutReducer";
 
 interface displayDataType {
   title: string;
@@ -93,7 +94,10 @@ const DisplayItem = ({ setAddedItem }: typeForDisplayItem) => {
   return (
     <Box sx={{ padding: "2rem" }}>
       <Button
-        onClick={() => dispatch(showDisplayCard())}
+        onClick={() => {
+          dispatch(showDisplayCard());
+          dispatch(toggleSideBar());
+        }}
         size="medium"
         startIcon={<ArrowBackIcon />}
       >

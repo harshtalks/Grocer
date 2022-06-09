@@ -22,16 +22,18 @@ const Details = (props: any) => {
   const dispatch = useAppDispatch();
   const data = JSON.parse(props.data);
   const error = props.error;
-  const categories = data
-    ? data.items.map((el: ShoppingItem & { category: Category }) => {
-        const result: number[] = [];
 
-        if (!result.includes(el.categoryId)) {
-          result.push(el.categoryId);
-          return el.category;
-        }
-      })
-    : null;
+  const result: number[] = [];
+  const categories: Category[] = [];
+
+  const getCategories = () => {
+    data.items.forEach((item: ShoppingItem & { category: Category }) => {
+      if (!result.includes(item.categoryId)) {
+        result.push(item.categoryId);
+        categories.push(item.category);
+      }
+    });
+  };
 
   //function
   const addBackToList = () => {
@@ -43,6 +45,8 @@ const Details = (props: any) => {
   };
 
   // addBackToList();
+
+  getCategories();
 
   return (
     <Layout>
@@ -142,6 +146,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   } catch (e: any) {
     console.log(e);
     error = e.message;
+  }
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
   }
 
   //

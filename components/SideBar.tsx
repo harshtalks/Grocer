@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import Account from "./smallComps/Account";
 import { useGetMediaQueryMatches } from "../hooks/useGetMediaQueryMatches";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { toggleSideBar } from "../app/layoutReducer";
+import { closeSideBar, toggleSideBar } from "../app/layoutReducer";
 //importing other stuffs
 
 export default function SideBar() {
@@ -84,6 +84,7 @@ export default function SideBar() {
         >
           <Tab
             onClick={() => {
+              dispatch(closeSideBar());
               router.push("/");
             }}
             value={"1"}
@@ -96,6 +97,7 @@ export default function SideBar() {
           />
           <Tab
             onClick={() => {
+              dispatch(closeSideBar());
               router.push("/history");
             }}
             value={"2"}
@@ -105,6 +107,7 @@ export default function SideBar() {
           />
           <Tab
             onClick={() => {
+              dispatch(closeSideBar());
               router.push("/stats");
             }}
             value={"3"}
